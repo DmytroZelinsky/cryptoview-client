@@ -1,0 +1,57 @@
+
+.top-crypto-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 24px;
+    gap: 10px;
+    margin: 20px;
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.top-crypto-header .item {
+    background-color: rgb(244, 243, 243);
+    border-radius: 5px;
+    padding: 16px;
+    flex-grow: 1;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 500px;
+}
+
+.top-crypto-header .item .title {
+    margin-bottom: 32px;
+}
+
+.list {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.list-column {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+    justify-content: flex-start;
+}
+
+.list-row {
+    width: 70px;
+}
+
+.price-change {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.symbol {
+    width: 120px;
+}
+
+.price {
+}
+

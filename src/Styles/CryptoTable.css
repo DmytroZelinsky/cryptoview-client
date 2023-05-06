@@ -1,0 +1,19 @@
+.crypto-table {
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ant-table table {
+    font-size: 20px;
+}
+
+
+
+.red {
+    color: #CF304A;
+}
+
+.green {
+    color: #0b9665
+}
