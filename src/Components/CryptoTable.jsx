@@ -1,119 +1,112 @@
-import React, { useEffect } from 'react';
-import axios from 'axios';
-import { Table, Divider } from 'antd'
+import React, { useEffect, useState } from 'react';
+import { Table, Divider, Input } from 'antd'
+import { MonitorOutlined } from '@ant-design/icons'
 import '../Styles/CryptoTable.css'
+import { getColorForPriceChange, formatPrice, formatPercent } from '../Helpers/priceHelper.js'
 
-const CryptoTable = ({data}) => {
+
+const CryptoTable = (props) => {
+
   const columns = [
     {
       title: 'Назва',
-      dataIndex: 'name',
-      width: '300px',
+      dataIndex: 'symbol',
+      width: '225px',
       render: (value, record) => (
         <div className="name-column">
-          {value}
+          {value} <span className="name">{record.name}</span>
         </div>
-      )
+      ),
+      sorter: (a, b) => a.symbol.localeCompare(b.symbol),
     },
     {
       title: 'Ціна',
       dataIndex: 'priceUsd',
-      width: '200px',
+      width: '175px',
       render: (value, record) => (
         <>
-          {Number(value) < 0 
-          ?
-            <div className={'price-usd-column ' + getColorForPriceChange(record.priceChangeStaus)}>
-                {Intl.NumberFormat('en-US', {
-                  notation: "compact",
-                  maximumFractionDigits: 2,
-                  style: 'currency', 
-                  currency: 'USD'
-                }).format(value)}
-            </div>
-          :
-            <div className={'price-usd-column ' + getColorForPriceChange(record.priceChangeStaus)}>
-              {Intl.NumberFormat('en-US', {
-                notation: "compact",
-                maximumSignificantDigits: 4,
-                maximumFractionDigits: 2,
-                style: 'currency', 
-                currency: 'USD'
-              }).format(value)}
-            </div>
-          }
+          <div className={'price-usd-column ' + getColorForPriceChange(record.priceChangeStatus)}>
+             {formatPrice(value)}
+          </div>
         </>
-      )
+      ),
+      sorter: (a, b) => a.priceUsd - b.priceUsd,
     },
     {
       title: 'Зміни',
       dataIndex: 'changePercent24Hr',
-      width: '225px',
+      width: '175px',
       render: (value, record) => (
-        <div className={'change-percent-column ' + getColorForPriceChange(record.priceChangeStaus)}>  
-            {(+value).toFixed(2) + '%'}
+        <div className={'change-percent-column ' + getColorForPriceChange(record.changePercent24HrStatus)}>  
+            {formatPercent(value)}
         </div>
-      )
+      ),
+      sorter: (a, b) => a.changePercent24Hr - b.changePercent24Hr,
     },
     {
       title: 'Об\'єм за 24г.',
       dataIndex: 'volumeUsd24Hr',
-      width: '275px',
+      width: '175px',
       render: (value) => (
         <div className='volume-usd-column'>
-             {Intl.NumberFormat('en-US', {
-              notation: "compact",
-              maximumFractionDigits: 2,
-              style: 'currency', 
-              currency: 'USD'
-            }).format(value)}
+             {formatPrice(value)}
         </div>
-      )
+      ),
+      sorter: (a, b) => a.volumeUsd24Hr - b.volumeUsd24Hr,
     },
     {
       title: 'Ринкова капіталізація',
       dataIndex: 'marketCapUsd',
-      width: '275px',
+      width: '175px',
       render: (value) => (
-        <div className='market-cap-usd-column'>
+        <>{value !== 0 ?
+          <div className='market-cap-usd-column'>
             {Intl.NumberFormat('en-US', {
               notation: "compact",
               maximumFractionDigits: 2,
               style: 'currency', 
               currency: 'USD'
             }).format(value)}
-        </div>
-      )
+          </div> : 
+          <div style={{textAlign:"center"}}>-</div>
+          }
+        </>
+      ),
+      sorter: (a, b) => a.marketCapUsd - b.marketCapUsd,
     },
     {
-        title: '',
-        dataIndex: '',
-        key: 'x',
-        render: () =>                   
-        <div>
-            <a>Деталі</a>
-            <Divider type="vertical" />
-            <a>Торгувати</a>
-        </div>,
-      },
+      title: '',
+      dataIndex: '',
+      key: 'x',
+      render: () =>                   
+      <div>
+          <a>Деталі</a>
+          <Divider type="vertical" />
+          <a>Торгувати</a>
+      </div>,
+      align: 'center'
+    },
   ];
 
-  const getColorForPriceChange = (priceStatus) => {
-    switch(priceStatus) {
-      case 1: return 'green'
-      case -1: return 'red'
-      case 0: return ''
-    }
-  }
+  const [searchValue, setSearchValue] = useState(null)
+  const [filteredCryptosUsdt, setFilteredCryptosUsdt] = useState()
 
+  useEffect(() => {
+    searchValue 
+      ? setFilteredCryptosUsdt(props.data?.filter(x => 
+        x.symbol.toLowerCase().includes(searchValue.toLowerCase()) || x.name.toLowerCase().includes(searchValue.toLowerCase())
+      ))
+      : setFilteredCryptosUsdt(props.data)
+  }, [searchValue, props])
 
-  useEffect(() => { }, [data])
-
-    return (
-        <div>
-            <Table className='crypto-table' fontSize='40px' dataSource={data} columns={columns}/>
+  return (
+      <div className="crypto-table-body">
+        <div className="crypto-table-wrapper">
+          <Input className="search-box" onChange={(e) => setSearchValue(e.target.value)} size="large" placeholder="Введіть назву монети" prefix={<MonitorOutlined />} />
+          <Table className='crypto-table' dataSource={filteredCryptosUsdt} columns={columns}/>
         </div>
-    );
+      </div>
+  );
 }
 
 export default CryptoTable;

@@ -1,0 +1,34 @@
+import React, { useEffect } from 'react';
+import '../Styles/TopCryptoItem.css';
+
+import { getColorForPriceChange, formatPrice, formatPercent } from '../Helpers/priceHelper.js'
+
+function TopCryptoItem({name, data}) {
+
+    useEffect(() => {
+
+    }, [data])
+
+    return (
+        <div className='top-crypto-item'>
+            <div className='title'><b>{name}</b></div>
+            <div className='list'>
+                {data?.map(item => (
+                    <div className='list-column'>
+                        <div className='list-row symbol' >
+                            {'img ' + item.symbol}
+                        </div>
+                        <div className={'list-row price ' + getColorForPriceChange(item.priceChangeStatus)}>
+                            {formatPrice(item.priceUsd)}
+                        </div>
+                        <div className={'list-row price-change ' + getColorForPriceChange(item.changePercent24HrStatus)}>
+                            {formatPercent(item.changePercent24Hr)}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+export default TopCryptoItem;

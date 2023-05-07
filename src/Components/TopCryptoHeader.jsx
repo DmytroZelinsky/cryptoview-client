@@ -1,61 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/TopCryptoHeader.css';
+import TopCryptoItem from './TopCryptoItem';
 import axios from 'axios';
 
-const TopCryptoHeader = props => {
+const TopCryptoHeader = (props) => {
 
-    const [highligtCoinHeader, setHighligthCoinHeader] =  useState('У центрі уваги');
-    const [newListingHeader, setNewListingHeader] =  useState('Нові лістигни');
-    const [topGainerCoinHeader, setTopGainerCoinHeader] =  useState('Монети, що показують ріст');
-    const [topVolumeCoinHeader, setTopVolumeCoinHeader] =  useState('Топ монети за об\'ємом');
+    const highligtCoinHeader = 'У центрі уваги'
+    const topLossCoinHeader = 'Монети, що показують спад'
+    const topGainerCoinHeader = 'Монети, що показують ріст'
+    const topVolumeCoinHeader =  'Топ монети за об\'ємом'
 
-
-    const [highligtCoinList, sethighligtCoinList] = useState(
-        [
-            { s: 'BTC', c: 30000, p: 67 },
-            { s: 'BNC', c: 2567, p: 23 },
-            { s: 'ETH', c: 10, p: 10 }
-        ]);
-    const [newListingList, setNewListingList] = useState([]);
-    const [topGainerCoinList, setTopGainerCoinList] = useState([]);
-    const [topVolumeCoinList, setTopVolumeCoinList] = useState([]);
+    const [highligtCoins, setHighligtCoins] = useState([]);
+    const [topLossCoins, setTopLossCoins] = useState([]);
+    const [topGainerCoins, setTopGainerCoins] = useState([]);
+    const [topVolumeCoins, setTopVolumeCoins] = useState([]);
 
     useEffect(() => {
-        
-    },[])
+        setHighligtCoins(props.data.sort((x, y) => 
+            +y.marketCapUsd - +x.marketCapUsd
+        ).slice(0, 3))
 
+        setTopLossCoins(props.data.sort((x, y) => 
+            +x.changePercent24Hr - +y.changePercent24Hr
+        ).slice(0, 3))
+
+        setTopGainerCoins(props.data.sort((x, y) => 
+            +y.changePercent24Hr - +x.changePercent24Hr
+        ).slice(0, 3))
+
+        setTopVolumeCoins(props.data.sort((x, y) => 
+            +y.volumeUsd24Hr - +x.volumeUsd24Hr
+        ).slice(0, 3))
+
+    }, [props])
 
     return (
-        <div className='body'>
-            <div className='top-crypto-header'>
-                <div className='item'>
-                    <div className='title'>{highligtCoinHeader}</div>
-                    <div className='list'>
-                        {highligtCoinList.map(item => (
-                            <div className='list-column'>
-                                <div className='list-row symbol'>
-                                    {'img ' + item.s}
-                                </div>
-                                <div className='list-row price'>
-                                    {item.c}
-                                </div>
-                                <div className='list-row price-change'>
-                                    {item.p}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className='item'>
-                    <div className='header'>{newListingHeader}</div>
-                </div>
-                <div className='item'>
-                    <div className='header'>{topGainerCoinHeader}</div>
-                </div>
-                <div className='item'>
-                    <div className='header'>{topVolumeCoinHeader}</div>
-                </div>
-      
+        <div className="top-crypto-header-body">
+             <div className='top-crypto-header'>
+                <TopCryptoItem data={highligtCoins} name={highligtCoinHeader}/>
+                <TopCryptoItem data={topLossCoins} name={topLossCoinHeader}/>
+                <TopCryptoItem data={topGainerCoins} name={topGainerCoinHeader}/>
+                <TopCryptoItem data={topVolumeCoins} name={topVolumeCoinHeader}/>
             </div>
         </div>
     );

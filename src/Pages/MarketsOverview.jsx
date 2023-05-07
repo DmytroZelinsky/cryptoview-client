@@ -74,16 +74,21 @@ const MarketsOverview = () => {
      }, [])
 
     useEffect(() => {
-        cryptosUsdt?.forEach(x => {
-            x.priceChangeStaus = 0
-            x.changePercent24HrStatus = 0
-        }) 
-
         cryptosUsdt?.forEach(c => {
+            c.priceChangeStatus = 0
+            c.changePercent24HrStatus = 0
             updatedCryptosUsdt?.forEach(u => {
                 if (u.s === c.symbol + 'USDT') {
-                    c.priceChangeStaus = +u.c > +c.priceUsd ? 1 : -1
-                    c.changePercent24HrStatus = +u.P > +c.changePercent24Hr ? 1 : -1
+                    c.priceChangeStatus = +u.c >= +c.priceUsd 
+                        ? +u.c === +c.priceUsd 
+                            ? 0
+                            : 1
+                        : -1
+                    c.changePercent24HrStatus = +u.P >= +c.changePercent24Hr 
+                        ? +u.P === +c.changePercent24Hr 
+                            ? 0
+                            : 1
+                        : -1
                     c.priceUsd = u.c // close price
                     c.changePercent24Hr = u.P
                     c.marketCapUsd = c.supply * u.c
@@ -95,7 +100,7 @@ const MarketsOverview = () => {
 
     return (
         <div>
-            <TopCryptoHeader/>
+            <TopCryptoHeader data={cryptosUsdt}/>
             <CryptoTable data={cryptosUsdt}/>
         </div>
     );

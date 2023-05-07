@@ -1,0 +1,46 @@
+.top-crypto-item {
+    border-radius: 5px;
+    padding: 16px;
+    flex: 1;
+    box-sizing: border-box;
+}
+
+.top-crypto-item :hover{
+}
+
+.top-crypto-item .title {
+    margin-bottom: 32px;
+}
+
+.list {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.list-column {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+    justify-content: flex-start;
+}
+
+.list-row {
+    width: 50px;
+
+}
+
+.price-change {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+}
+
+.symbol {
+    width: 100px;
+}
+
+.price {
+}
