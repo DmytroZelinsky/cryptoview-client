@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '../Styles/TopCryptoItem.css';
 
-import { getColorForPriceChange, formatPrice, formatPercent } from '../Helpers/priceHelper.js'
+import { getColorForPriceChange, formatPriceShort, formatPercent } from '../Helpers/priceHelper.js'
 
 function TopCryptoItem({name, data}) {
 
@@ -19,7 +19,7 @@ function TopCryptoItem({name, data}) {
                             {'img ' + item.symbol}
                         </div>
                         <div className={'list-row price ' + getColorForPriceChange(item.priceChangeStatus)}>
-                            {formatPrice(item.priceUsd)}
+                            {formatPriceShort(item.priceUsd)}
                         </div>
                         <div className={'list-row price-change ' + getColorForPriceChange(item.changePercent24HrStatus)}>
                             {formatPercent(item.changePercent24Hr)}

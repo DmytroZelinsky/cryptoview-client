@@ -16,19 +16,19 @@ const TopCryptoHeader = (props) => {
     const [topVolumeCoins, setTopVolumeCoins] = useState([]);
 
     useEffect(() => {
-        setHighligtCoins(props.data.sort((x, y) => 
+        setHighligtCoins([...props.data].sort((x, y) => 
             +y.marketCapUsd - +x.marketCapUsd
         ).slice(0, 3))
 
-        setTopLossCoins(props.data.sort((x, y) => 
+        setTopLossCoins([...props.data].sort((x, y) => 
             +x.changePercent24Hr - +y.changePercent24Hr
         ).slice(0, 3))
 
-        setTopGainerCoins(props.data.sort((x, y) => 
+        setTopGainerCoins([...props.data].sort((x, y) => 
             +y.changePercent24Hr - +x.changePercent24Hr
         ).slice(0, 3))
 
-        setTopVolumeCoins(props.data.sort((x, y) => 
+        setTopVolumeCoins([...props.data].sort((x, y) => 
             +y.volumeUsd24Hr - +x.volumeUsd24Hr
         ).slice(0, 3))
 

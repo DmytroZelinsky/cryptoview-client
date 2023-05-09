@@ -27,6 +27,7 @@
 
 .ant-table table {
     font-size: var(--main-font-size);
+    width: 100% !important;
 }
 
 .crypto-table .name-column .name{

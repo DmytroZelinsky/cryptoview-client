@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Divider, Input } from 'antd'
 import { MonitorOutlined } from '@ant-design/icons'
 import '../Styles/CryptoTable.css'
-import { getColorForPriceChange, formatPrice, formatPercent } from '../Helpers/priceHelper.js'
+import { getColorForPriceChange, formatPriceShort, formatPercent } from '../Helpers/priceHelper.js'
 
 
 const CryptoTable = (props) => {
@@ -26,7 +26,7 @@ const CryptoTable = (props) => {
       render: (value, record) => (
         <>
           <div className={'price-usd-column ' + getColorForPriceChange(record.priceChangeStatus)}>
-             {formatPrice(value)}
+             {formatPriceShort(value)}
           </div>
         </>
       ),
@@ -49,7 +49,7 @@ const CryptoTable = (props) => {
       width: '175px',
       render: (value) => (
         <div className='volume-usd-column'>
-             {formatPrice(value)}
+             {formatPriceShort(value)}
         </div>
       ),
       sorter: (a, b) => a.volumeUsd24Hr - b.volumeUsd24Hr,
@@ -98,6 +98,10 @@ const CryptoTable = (props) => {
       ))
       : setFilteredCryptosUsdt(props.data)
   }, [searchValue, props])
+
+  useEffect(() => {
+
+  }, [props])
 
   return (
       <div className="crypto-table-body">

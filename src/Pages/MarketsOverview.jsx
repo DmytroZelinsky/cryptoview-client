@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import ws, { waitForOpenConnection } from '../socket'
+import ws, { unsubscribeFromSocket, subscribeToSocket } from '../socket'
 import TopCryptoHeader from '../Components/TopCryptoHeader'
 import CryptoTable from '../Components/CryptoTable'
 import axios from 'axios'
 
 const MarketsOverview = () => {
+
+    const streamName = "!ticker@arr@3000ms"
+    const streamId = 1
 
     const [cryptosUsdt, setCryptosUsdt] = useState([]);
     const [updatedCryptosUsdt, setUpdatedCryptosUsdt] = useState([]);
@@ -30,47 +33,23 @@ const MarketsOverview = () => {
             })
     }
 
-    const subscribeToSocket = async () => {
-
-        await waitForOpenConnection()
-
-        ws.send(JSON.stringify({
-            "method": "SUBSCRIBE",
-            "params":
-            [
-                "!ticker@arr@3000ms"
-            ],
-            "id": 1
-        }))
-    }
-
-    const unsubscribeFromSocket = async () => {
-
-        await waitForOpenConnection()
-        ws.send(JSON.stringify({
-            "method": "UNSUBSCRIBE",
-            "params":
-            [
-                "!ticker@arr@3000ms"
-            ],
-            "id": 1
-        }))
-    }
-
     const setOnMessage = () => {
         ws.onmessage = (message) => {
-            setUpdatedCryptosUsdt(JSON.parse(message.data).data);
+            let data = JSON.parse(message.data)
+            if (data.stream === streamName) {
+                setUpdatedCryptosUsdt(JSON.parse(message.data).data);
+            }
         }
     }
 
     useEffect(() => {
         getCryptosUsdt()
 
-        subscribeToSocket()
+        subscribeToSocket([streamName], streamId)
         
         setOnMessage()
         
-        return async () => await unsubscribeFromSocket()
+        return async () => { await unsubscribeFromSocket([streamName], streamId) }
      }, [])
 
     useEffect(() => {
@@ -92,12 +71,14 @@ const MarketsOverview = () => {
                     c.priceUsd = u.c // close price
                     c.changePercent24Hr = u.P
                     c.marketCapUsd = c.supply * u.c
+                    return
                 }
             })
         })
 
     }, [updatedCryptosUsdt])
 
+    
     return (
         <div>
             <TopCryptoHeader data={cryptosUsdt}/>

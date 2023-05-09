@@ -6,7 +6,7 @@ const getColorForPriceChange = (priceStatus) => {
     }
 }
 
-const formatPrice = (price) => 
+const formatPriceShort = (price) => 
     Intl.NumberFormat('en-US', {
         notation: "compact",
         maximumSignificantDigits: 4,
@@ -15,8 +15,12 @@ const formatPrice = (price) =>
         currency: 'USD'
     }).format(price)
 
-const formatPercent = (percent) => 
+const formatNumber = (number) => 
+    Intl.NumberFormat('en-US', {        
+        maximumSignificantDigits: 8,
+    }).format(number)
 
+const formatPercent = (percent) => 
     Intl.NumberFormat('en-US', {
         notation: "compact",
         maximumFractionDigits: 2,
@@ -24,4 +28,4 @@ const formatPercent = (percent) =>
     }).format(percent) + '%'
     
 
-export { getColorForPriceChange, formatPrice, formatPercent }
+export { getColorForPriceChange, formatPriceShort, formatPercent, formatNumber }
