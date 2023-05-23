@@ -1,11 +1,20 @@
 .orderbook-body {
     padding: 14px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-radius: 10px;
+    border: 0.5px solid rgb(212, 212, 212);
+    background-color: rgb(255, 255, 255);
+}
+
+.orderbook-body .price{
+    padding: 8px 10px;
+    font-size: 20px;
+}
+
+.orderbook-body table {
+    font-size: 14px;
 }
 
 .orderbook-body .ant-table-row {
-    height: 25px !important;    
+    height: 36px !important;    
 }
 
 .orderbook-body .ant-table-cell {

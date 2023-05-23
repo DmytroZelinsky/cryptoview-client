@@ -1,0 +1,21 @@
+.market-trades-body {
+    padding: 14px;
+    border: 0.5px solid rgb(212, 212, 212);
+    background-color: rgb(255, 255, 255);
+}
+
+.market-trades-body table {
+    font-size: 14px;
+}
+
+.market-trades-body .ant-table-cell {
+
+    padding: 2px 0 2px 0 !important;
+}
+
+.market-trades-body .header {
+    all:unset;
+    font-size: 20px;
+    display:inline-block;
+    margin: 4px 0 4px 0;
+}

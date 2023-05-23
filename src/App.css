@@ -24,15 +24,7 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app-body .header {
+  margin: 0 auto;
+  background-color: rgb(236, 236, 254);
 }

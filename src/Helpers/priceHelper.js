@@ -3,6 +3,7 @@ const getColorForPriceChange = (priceStatus) => {
       case 1: return 'green'
       case -1: return 'red'
       case 0: return ''
+      default: return ''
     }
 }
 
@@ -16,16 +17,20 @@ const formatPriceShort = (price) =>
     }).format(price)
 
 const formatNumber = (number) => 
-    Intl.NumberFormat('en-US', {        
-        maximumSignificantDigits: 8,
-    }).format(number)
+        number
+        ? Intl.NumberFormat('en-US', {        
+            maximumSignificantDigits: 8,
+        }).format(number)
+        : '-'
 
 const formatPercent = (percent) => 
-    Intl.NumberFormat('en-US', {
+    percent 
+    ? Intl.NumberFormat('en-US', {
         notation: "compact",
         maximumFractionDigits: 2,
         signDisplay: "exceptZero"
     }).format(percent) + '%'
+    : '-'
     
 
 export { getColorForPriceChange, formatPriceShort, formatPercent, formatNumber }

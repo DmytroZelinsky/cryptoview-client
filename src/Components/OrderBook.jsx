@@ -4,52 +4,64 @@ import { getColorForPriceChange, formatPriceShort, formatNumber } from '../Helpe
 
 function OrderBook(props) {
 
+    const askPriceCol = {
+        title: 'Ціна(' + props.quoteName.toUpperCase() + ')',
+        dataIndex: 'price',
+        key: 'price',
+        render: (value, record) => (
+            <div className="red">  
+                {formatNumber(value)}
+            </div>
+        ),
+        width: '100px'
+    }
+
+    const bidPriceCol = {
+        title: 'Ціна(' + props.quoteName.toUpperCase() + ')',
+        dataIndex: 'price',
+        key: 'price',
+        render: (value, record) => (
+            <div className="green">  
+                {formatNumber(value)}
+            </div>
+        ),
+        width: '100px'
+    }
+
     const columns = [
-        {
-            title: 'Ціна(' + props.baseName.toUpperCase() + ')',
-            dataIndex: 'price',
-            key: 'price',
-            render: (value, record) => (
-                <div>  
-                    {formatNumber(value)}
-                </div>
-            ),
-            width: '100px'
-        },
-        {
-            title: 'Кількість(' + props.quoteName.toUpperCase() + ')',
-            dataIndex: 'qty',
-            key: 'qty',
-            render: (value, record) => (
-                <div>  
-                    {formatNumber(value)}
-                </div>
-            ),
-            align:'right',
-            width: '100px'
-        },
-        {
-            title: 'Усього',
-            dataIndex: 'total',
-            key: 'total',
-            render: (value, record) => (
-                <div>  
-                    {formatNumber(value)}
-                </div>
-            ),
-            align:'right',
-            width: '100px'
-        },
-      ];
+    {
+        title: 'Кількість(' + props.baseName.toUpperCase() + ')',
+        dataIndex: 'qty',
+        key: 'qty',
+        render: (value, record) => (
+        <div>  
+            {formatNumber(value)}
+        </div>
+        ),
+        align:'right',
+        width: '100px'
+    },
+    {
+        title: 'Усього',
+        dataIndex: 'total',
+         key: 'total',
+        render: (value, record) => (
+            <div>  
+                {formatNumber(value)}
+            </div>
+        ),
+        align:'right',
+        width: '100px'
+    }];
 
     return (
         <div className="orderbook-body">
-            <Table columns={columns} dataSource={props.bids} pagination={{position: ['none', 'none']}} size='small'/>
-            Sometgins
+            <Table columns={[askPriceCol, ...columns]} dataSource={props.asks} pagination={{position: ['none', 'none']}} size='small'/>
+            <div className="price">{formatNumber(props.crypto?.c)}</div>
             <Table 
-                columns={columns}
+                columns={[bidPriceCol, ...columns]}
                 showHeader={false}
-                dataSource={props.asks} 
+                dataSource={props.bids} 
                 pagination={{position: ['none', 'none']}} 
                 size='small'/>
         </div>

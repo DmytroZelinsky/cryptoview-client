@@ -1,0 +1,21 @@
+.trade-header-body {
+    padding: 14px;
+    border: 0.5px solid rgb(212, 212, 212);
+    background-color: rgb(255, 255, 255);
+}
+
+.trade-header-body .symbol {
+    font-size: 24px;
+    min-width: 150px;
+}
+
+.trade-header-body .price {
+    font-size: 26px;
+    min-width: 150px;
+
+}
+
+
+.trade-header-body .price-change-col {
+    min-width: 150px;
+}

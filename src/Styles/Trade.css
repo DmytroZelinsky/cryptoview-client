@@ -2,22 +2,4 @@
     padding: 8px;
 }
 
-.trade-body .header {
-    padding: 14px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-radius: 10px;
-}
 
-.trade-body .header .symbol {
-    font-size: 24px;
-    min-width: 150px;
-}
-
-
-.trade-body .header .col {
-    min-width: 100px;
-}
-
-.trade-body .header .price-change-col {
-    min-width: 150px;
-}
