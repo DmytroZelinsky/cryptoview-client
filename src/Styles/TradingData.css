@@ -1,0 +1,13 @@
+.trading-data-body {
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 30px;
+}
+
+.trading-data-body .header{
+    all:unset;
+    font-size: 20px;
+    display:inline-block;
+    margin: 16px 0 16px 0;
+}

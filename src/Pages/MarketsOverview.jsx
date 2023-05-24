@@ -3,6 +3,7 @@ import ws, { unsubscribeFromSocket, subscribeToSocket } from '../socket'
 import TopCryptoHeader from '../Components/TopCryptoHeader'
 import CryptoTable from '../Components/CryptoTable'
 import axios from 'axios'
+import TradingData from '../Components/TradingData'
 
 const MarketsOverview = () => {
 
@@ -11,6 +12,7 @@ const MarketsOverview = () => {
 
     const [cryptosUsdt, setCryptosUsdt] = useState([]);
     const [updatedCryptosUsdt, setUpdatedCryptosUsdt] = useState([]);
+
 
     const getCryptosUsdt = async () => {
         let availableCryptoUsdt = []
@@ -83,6 +85,7 @@ const MarketsOverview = () => {
         <div>
             <TopCryptoHeader data={cryptosUsdt}/>
             <CryptoTable data={cryptosUsdt}/>
+            <TradingData data={cryptosUsdt}/>
         </div>
     );
 };
