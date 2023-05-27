@@ -11,6 +11,7 @@ import MarketTrades from '../Components/MarketTrades';
 import axios from 'axios'
 import ForecastPrices from '../Components/ForecastPrices';
 import PriceCalculator from '../Components/PriceCalculator';
+import { formatNumber } from '../Helpers/priceHelper.js'
 
 function Trade(props) {
 
@@ -21,6 +22,7 @@ function Trade(props) {
     const [bids, setBids] = useState([])
     const [trades, setTrades] = useState([])
     const [forecastPrices, setForecastPrices] = useState([])
+    const [price, setPrice] = useState()
 
     const [baseName, quoteName] = symbol.split('_')
 
@@ -91,8 +93,13 @@ function Trade(props) {
                                 ? prev[0].priceStatus
                                 : 1
                            : -1
-                        }
+                    }
 
+                    setPrice({
+                        value: trade.price,
+                        status: trade.priceStatus
+                    })
+                    document.title = formatNumber(trade.price) + ' | ' + displaySymbolName
                     return [trade,...prev].slice(0,tradesCount)
                 })
             }
@@ -135,7 +142,7 @@ function Trade(props) {
         <div className="trade-body">
             <Row gutter={[16,24]}>
                 <Col span={18}>
-                    <TradeHeader baseName={baseName} quoteName={quoteName} crypto={crypto} symbolName={displaySymbolName}/>
+                    <TradeHeader baseName={baseName} quoteName={quoteName} crypto={crypto} symbolName={displaySymbolName} price={price}/>
                     <Row gutter={[16,24]} style={{marginTop:"16px"}}>
                         <Col span={8}>
                             <OrderBook bids={bids} asks={asks} crypto={crypto} baseName={baseName} quoteName={quoteName}/>

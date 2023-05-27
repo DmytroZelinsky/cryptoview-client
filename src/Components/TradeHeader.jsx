@@ -1,19 +1,23 @@
 import React from 'react';
 import { getColorForPriceChange, formatPriceShort, formatPercent, formatNumber } from '../Helpers/priceHelper'
-
+import { LeftOutlined } from '@ant-design/icons'
+import { Link, useNavigate } from 'react-router-dom';
 import { Row, Col } from 'antd'
 import '../Styles/TradeHeader.css'
 
 function TradeHeader(props) {
+
+    let navigate = useNavigate()
+
     return (
         <Row className="trade-header-body">
             <div className="symbol">
                 {props.symbolName}
             </div>
-            <Col>
+            <Col span={19}>
                 <Row gutter={24}>
-                    <Col className={"col price " + getColorForPriceChange(props.crypto?.priceStatus)}>
-                        {formatNumber(props.crypto?.c)}
+                    <Col className={"col price " + getColorForPriceChange(props.price?.status)}>
+                        {formatNumber(props.price?.value)}
                     </Col>
                     <Col className="col price-change-col">
                         <Row>
@@ -57,6 +61,9 @@ function TradeHeader(props) {
                         </Row>
                     </Col>
                 </Row>
+            </Col>
+            <Col>
+                <Link onClick={() => navigate(-1)}><LeftOutlined/> Назад</Link>
             </Col>
         </Row>
     );

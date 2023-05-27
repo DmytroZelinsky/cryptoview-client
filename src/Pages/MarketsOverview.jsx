@@ -51,6 +51,8 @@ const MarketsOverview = () => {
         
         setOnMessage()
         
+        document.title = 'Огляд ринків'
+
         return async () => { await unsubscribeFromSocket([streamName], streamId) }
      }, [])
 

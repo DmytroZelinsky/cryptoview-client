@@ -20,7 +20,7 @@ function App() {
           Огляд ринків
         </Menu.Item>
       </Menu>
-      <Link to='/'>To home</Link>
+      {/* <Link to='/'>To home</Link> */}
       <Routes>
         <Route path="/" element={<div>Home</div>}/>
         <Route path="/marketsoverview" element={<MarketsOverview/>}/>
