@@ -3,10 +3,10 @@ import { Table, Divider, Input } from 'antd'
 import { MonitorOutlined } from '@ant-design/icons'
 import '../Styles/CryptoTable.css'
 import { getColorForPriceChange, formatPriceShort, formatPercent } from '../Helpers/priceHelper.js'
-
+import { useNavigate } from "react-router-dom";
 
 const CryptoTable = (props) => {
-
+  let navigate = useNavigate();
   const columns = [
     {
       title: 'Назва',
@@ -78,11 +78,9 @@ const CryptoTable = (props) => {
       title: '',
       dataIndex: '',
       key: 'x',
-      render: () =>                   
+      render: (value, record) =>                   
       <div>
-          <a>Деталі</a>
-          <Divider type="vertical" />
-          <a>Торгувати</a>
+          <a onClick={() => navigate('/trade/'+ record.symbol + '_USDT' +'/' + record.id)}>Деталі</a>
       </div>,
       align: 'center'
     },

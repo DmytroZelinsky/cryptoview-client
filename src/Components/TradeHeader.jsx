@@ -34,7 +34,7 @@ function TradeHeader(props) {
                     </Col>
                     <Col className="col">
                         <Row>
-                            24г Макс
+                            24г Мін
                         </Row>
                         <Row>
                             <Col>{formatNumber(props.crypto?.l)}</Col>

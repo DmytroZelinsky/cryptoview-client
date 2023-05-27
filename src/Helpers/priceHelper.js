@@ -16,6 +16,14 @@ const formatPriceShort = (price) =>
         currency: 'USD'
     }).format(price)
 
+
+const formatPrice = (price) => 
+    Intl.NumberFormat('en-US', {
+        style: 'currency', 
+        currency: 'USD'
+    }).format(price)
+
+
 const formatNumber = (number) => 
         number
         ? Intl.NumberFormat('en-US', {        
@@ -33,4 +41,4 @@ const formatPercent = (percent) =>
     : '-'
     
 
-export { getColorForPriceChange, formatPriceShort, formatPercent, formatNumber }
+export { getColorForPriceChange, formatPriceShort, formatPercent, formatNumber, formatPrice }

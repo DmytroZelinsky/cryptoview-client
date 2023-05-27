@@ -73,8 +73,6 @@ function PriceChangeDistribution(props) {
             }
           })
 
-          console.log(groupedCryptoUsdt)
-
           let newChartData = [...chartData]
 
           Object.keys(groupedCryptoUsdt).forEach(function(key, index) {

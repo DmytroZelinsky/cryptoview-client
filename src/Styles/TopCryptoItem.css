@@ -3,6 +3,7 @@
     padding: 16px;
     flex: 1;
     box-sizing: border-box;
+    height: 170px;
 }
 
 .top-crypto-item :hover{

@@ -9,15 +9,18 @@ import TradeHeader from '../Components/TradeHeader';
 import TradingView from '../Components/TradingView';
 import MarketTrades from '../Components/MarketTrades';
 import axios from 'axios'
+import ForecastPrices from '../Components/ForecastPrices';
+import PriceCalculator from '../Components/PriceCalculator';
 
 function Trade(props) {
 
-    let { symbol } = useParams()
+    let { symbol, id } = useParams()
 
     const [crypto, setCrypto] = useState()
     const [asks, setAsks] = useState([])
     const [bids, setBids] = useState([])
     const [trades, setTrades] = useState([])
+    const [forecastPrices, setForecastPrices] = useState([])
 
     const [baseName, quoteName] = symbol.split('_')
 
@@ -96,10 +99,30 @@ function Trade(props) {
         }
     }
 
+    const getPriceForecast = async (id) => {
+        await axios.get('https://localhost:7272/api/PriceChanges?id=' + id)
+            .then(response => {
+                setForecastPrices(response.data.map((x, i) => { 
+                    let date = new Date()
+                    date.setDate(date.getDate() + i)
+                    
+                    return {
+                        date: i === 0 
+                            ? 'Сьогодні'
+                            : date.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'}),
+                        priceUsd: x
+                    }
+                }))
+            })
+    }
+
+
     useEffect(() => {
 
         subscribeToSocket([symbolStreamName, orderBooksStreamName, tradeStreamName], streamId)
         
+        getPriceForecast(id)
+
         getTrades()
 
         setOnMessage()
@@ -118,13 +141,23 @@ function Trade(props) {
                             <OrderBook bids={bids} asks={asks} crypto={crypto} baseName={baseName} quoteName={quoteName}/>
                         </Col>
                         <Col span={16}>
-                            <TradingView/>
+                            <Row>
+                                <TradingView symbol={[baseName, quoteName].join('')} />
+                            </Row>
+                            <Row>
+                                <ForecastPrices data={forecastPrices} />
+                            </Row>
                         </Col>
                     </Row>
                 </Col>
 
                 <Col span={6}>
-                    <MarketTrades trades={trades} baseName={baseName} quoteName={quoteName}/>
+                    <Row>
+                        <MarketTrades trades={trades} baseName={baseName} quoteName={quoteName}/>
+                    </Row>
+                    <Row>
+                        <PriceCalculator crypto={crypto} baseName={baseName}/>
+                    </Row>
                 </Col>
             </Row>
         </div>

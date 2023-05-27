@@ -6,7 +6,7 @@ import '../Styles/TradingView.css'
 
 let tvScriptLoadingPromise;
 
-export default function TradingView() {
+export default function TradingView(props) {
   const onLoadScriptRef = useRef();
 
   useEffect(
@@ -33,7 +33,7 @@ export default function TradingView() {
         if (document.getElementById('tradingview_3a54d') && 'TradingView' in window) {
           new window.TradingView.widget({
             autosize: true,
-            symbol: "BINANCE:ETHUSDT",
+            symbol: "BINANCE:" + props.symbol,
             interval: "D",
             timezone: "Europe/Riga",
             theme: "light",
