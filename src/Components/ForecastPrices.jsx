@@ -12,7 +12,6 @@ function ForecastPrices(props) {
         point: { size: 5, shape: 'diamon' },
         color: 'blue',
         animation: false,
-
       };
     
     return (

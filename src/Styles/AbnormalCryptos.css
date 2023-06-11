@@ -4,6 +4,7 @@
     margin: 14px;
     margin-top:10px;
     box-sizing: border-box;
+    background-color: #FAFAFA;
 }
 
 .abnormal-cryptos-body .header {
@@ -16,6 +17,7 @@
 .abnormal-cryptos-body table {
     font-size: 13px;
     margin-top: 10px;
+    background-color: #FAFAFA;
 }
 
 .abnormal-cryptos-body .ant-table-row {

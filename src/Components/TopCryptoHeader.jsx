@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/TopCryptoHeader.css';
 import TopCryptoItem from './TopCryptoItem';
-import axios from 'axios';
+import { Skeleton } from 'antd';
 
 const TopCryptoHeader = (props) => {
 
@@ -37,10 +37,10 @@ const TopCryptoHeader = (props) => {
     return (
         <div className="top-crypto-header-body">
              <div className='top-crypto-header'>
-                <TopCryptoItem data={highligtCoins} name={highligtCoinHeader}/>
-                <TopCryptoItem data={topLossCoins} name={topLossCoinHeader}/>
-                <TopCryptoItem data={topGainerCoins} name={topGainerCoinHeader}/>
-                <TopCryptoItem data={topVolumeCoins} name={topVolumeCoinHeader}/>
+                { props.isLoaded ? <TopCryptoItem data={highligtCoins} name={highligtCoinHeader}/> : <Skeleton active/> }
+                { props.isLoaded ? <TopCryptoItem data={topLossCoins} name={topLossCoinHeader}/>: <Skeleton active/> }
+                { props.isLoaded ? <TopCryptoItem data={topGainerCoins} name={topGainerCoinHeader}/>: <Skeleton active/> }
+                { props.isLoaded ? <TopCryptoItem data={topVolumeCoins} name={topVolumeCoinHeader}/>: <Skeleton active/> }
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import '../Styles/TopCryptoItem.css';
+import { Skeleton } from 'antd'
 
 import { getColorForPriceChange, formatPriceShort, formatPercent } from '../Helpers/priceHelper.js'
 
@@ -16,7 +17,7 @@ function TopCryptoItem({name, data}) {
                 {data?.map(item => (
                     <div className='list-column'>
                         <div className='list-row symbol' >
-                            {'img ' + item.symbol}
+                            {item.symbol}
                         </div>
                         <div className={'list-row price ' + getColorForPriceChange(item.priceChangeStatus)}>
                             {formatPriceShort(item.priceUsd)}

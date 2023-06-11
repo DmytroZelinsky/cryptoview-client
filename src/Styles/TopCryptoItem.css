@@ -4,6 +4,7 @@
     flex: 1;
     box-sizing: border-box;
     height: 170px;
+    background-color: #FFFFFF;
 }
 
 .top-crypto-item :hover{

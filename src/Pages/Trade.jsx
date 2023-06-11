@@ -35,7 +35,17 @@ function Trade(props) {
     const streamId = 2
     const tradesCount = 20
 
-    const getTrades = async () => {
+    const getCrypto = (data) => {
+        let newCrypto = data.data
+
+        setCrypto(prev => {
+            newCrypto.priceStatus = +newCrypto.c > +prev?.c ? 1 : -1
+            newCrypto.priceChangeStatus = +newCrypto.P > 0 ? 1 : -1
+            return newCrypto
+        })
+    }
+
+    const getInitialMarketTrades = async () => {
         await axios.get('https://api.binance.com/api/v3/trades?symbol=' + [baseName, quoteName].join('') + '&limit=' + tradesCount)
         .then(response => {
             console.log(response.data)
@@ -49,59 +59,61 @@ function Trade(props) {
         })  
     }
 
+    const getMarketTrades = (data) => {
+        let dateTime = new Date(data.data.T).toLocaleString('en-GB').substring(12,21).toString()
+
+        setTrades(prev => 
+        {
+            let trade = {
+                price: data.data.p,
+                qty: data.data.q,
+                time: dateTime,
+                priceStatus: +data.data.p >= +prev[0].price 
+                    ? +data.data.p === +prev[0].price 
+                        ? prev[0].priceStatus
+                        : 1
+                   : -1
+            }
+
+            setPrice({
+                value: trade.price,
+                status: trade.priceStatus
+            })
+            document.title = formatNumber(trade.price) + ' | ' + displaySymbolName
+            return [trade,...prev].slice(0,tradesCount)
+        })
+    }
+
+    const getOrderBooks = (data) => {
+        setAsks(data.data.asks.map(a => {
+            return {
+                price: a[0],
+                qty: a[1],
+                total: a[0] * a[1]
+            }
+        }).reverse())
+
+        setBids(data.data.bids.map(b => {
+            return {
+                price: b[0],
+                qty: b[1],
+                total: b[0] * b[1]
+            }
+        }))
+    }
+
     const setOnMessage = () => {
         ws.onmessage = (message) => {
             let data = JSON.parse(message.data)
 
             if (data.stream === symbolStreamName) {
-                let newCrypto = data.data
-
-                setCrypto(prev => {
-                    newCrypto.priceStatus = +newCrypto.c > +prev?.c ? 1 : -1
-                    newCrypto.priceChangeStatus = +newCrypto.P > 0 ? 1 : -1
-                    return newCrypto
-                })
+                getCrypto(data)
             }
             else if(data.stream === orderBooksStreamName) {
-                setAsks(data.data.asks.map(a => {
-                    return {
-                        price: a[0],
-                        qty: a[1],
-                        total: a[0] * a[1]
-                    }
-                }).reverse())
-
-                setBids(data.data.bids.map(b => {
-                    return {
-                        price: b[0],
-                        qty: b[1],
-                        total: b[0] * b[1]
-                    }
-                }))
+                getOrderBooks(data)
             } 
             else if(data.stream === tradeStreamName) {
-                let dateTime = new Date(data.data.T).toLocaleString('en-GB').substring(12,21).toString()
-
-                setTrades(prev => 
-                {
-                    let trade = {
-                        price: data.data.p,
-                        qty: data.data.q,
-                        time: dateTime,
-                        priceStatus: +data.data.p >= +prev[0].price 
-                            ? +data.data.p === +prev[0].price 
-                                ? prev[0].priceStatus
-                                : 1
-                           : -1
-                    }
-
-                    setPrice({
-                        value: trade.price,
-                        status: trade.priceStatus
-                    })
-                    document.title = formatNumber(trade.price) + ' | ' + displaySymbolName
-                    return [trade,...prev].slice(0,tradesCount)
-                })
+                getMarketTrades(data)
             }
         }
     }
@@ -123,20 +135,18 @@ function Trade(props) {
             })
     }
 
-
     useEffect(() => {
 
         subscribeToSocket([symbolStreamName, orderBooksStreamName, tradeStreamName], streamId)
         
         getPriceForecast(id)
 
-        getTrades()
+        getInitialMarketTrades()
 
         setOnMessage()
         
         return async () => { await unsubscribeFromSocket([symbolStreamName, orderBooksStreamName, tradeStreamName], streamId) }
      }, [])
-
 
     return (
         <div className="trade-body">

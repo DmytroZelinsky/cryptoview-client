@@ -12,10 +12,11 @@ const MarketsOverview = () => {
 
     const [cryptosUsdt, setCryptosUsdt] = useState([]);
     const [updatedCryptosUsdt, setUpdatedCryptosUsdt] = useState([]);
-
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const getCryptosUsdt = async () => {
         let availableCryptoUsdt = []
+        setIsLoaded(false)
         await axios.get('https://api.binance.com/api/v3/exchangeInfo')
             .then(response => {
                 availableCryptoUsdt = response.data.symbols.filter(x => 
@@ -33,6 +34,7 @@ const MarketsOverview = () => {
                     )
                 }))
             })
+            setIsLoaded(true)
     }
 
     const setOnMessage = () => {
@@ -85,7 +87,7 @@ const MarketsOverview = () => {
     
     return (
         <div>
-            <TopCryptoHeader data={cryptosUsdt}/>
+            <TopCryptoHeader data={cryptosUsdt} isLoaded={isLoaded}/>
             <CryptoTable data={cryptosUsdt}/>
             <TradingData data={cryptosUsdt}/>
         </div>

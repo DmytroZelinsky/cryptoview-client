@@ -6,6 +6,10 @@ import { getColorForPriceChange, formatPriceShort, formatPercent } from '../Help
 import { useNavigate } from "react-router-dom";
 
 const CryptoTable = (props) => {
+
+  const sortValues = (a, b) => a - b 
+  const sortStrings = (a, b) => a.localeCompare(b) 
+
   let navigate = useNavigate();
   const columns = [
     {
@@ -17,7 +21,7 @@ const CryptoTable = (props) => {
           {value} <span className="name">{record.name}</span>
         </div>
       ),
-      sorter: (a, b) => a.symbol.localeCompare(b.symbol),
+      sorter: (a, b) => sortStrings(a.symbol, b.symbol),
     },
     {
       title: 'Ціна',
@@ -30,7 +34,7 @@ const CryptoTable = (props) => {
           </div>
         </>
       ),
-      sorter: (a, b) => a.priceUsd - b.priceUsd,
+      sorter: (a, b) => sortValues(a.priceUsd, b.priceUsd),
     },
     {
       title: 'Зміни',
@@ -41,7 +45,7 @@ const CryptoTable = (props) => {
             {formatPercent(value)}
         </div>
       ),
-      sorter: (a, b) => a.changePercent24Hr - b.changePercent24Hr,
+      sorter: (a, b) => sortValues(a.changePercent24Hr, b.changePercent24Hr),
     },
     {
       title: 'Об\'єм за 24г.',
@@ -52,7 +56,7 @@ const CryptoTable = (props) => {
              {formatPriceShort(value)}
         </div>
       ),
-      sorter: (a, b) => a.volumeUsd24Hr - b.volumeUsd24Hr,
+      sorter: (a, b) => sortValues(a.volumeUsd24Hr, b.volumeUsd24Hr),
     },
     {
       title: 'Ринкова капіталізація',
@@ -72,7 +76,7 @@ const CryptoTable = (props) => {
           }
         </>
       ),
-      sorter: (a, b) => a.marketCapUsd - b.marketCapUsd,
+      sorter: (a, b) => sortValues(a.marketCapUsd, b.marketCapUsd),
     },
     {
       title: '',
@@ -89,12 +93,18 @@ const CryptoTable = (props) => {
   const [searchValue, setSearchValue] = useState(null)
   const [filteredCryptosUsdt, setFilteredCryptosUsdt] = useState()
 
-  useEffect(() => {
+  const onSearchValueChange = () => {
     searchValue 
-      ? setFilteredCryptosUsdt(props.data?.filter(x => 
-        x.symbol.toLowerCase().includes(searchValue.toLowerCase()) || x.name.toLowerCase().includes(searchValue.toLowerCase())
-      ))
-      : setFilteredCryptosUsdt(props.data)
+    ? setFilteredCryptosUsdt(props.data?.filter(x => 
+      x.symbol.toLowerCase().includes(searchValue.toLowerCase()) || x.name.toLowerCase().includes(searchValue.toLowerCase())
+    ))
+    : setFilteredCryptosUsdt(props.data)
+  }
+
+  useEffect(() => {
+
+    onSearchValueChange()
+
   }, [searchValue, props])
 
   useEffect(() => {

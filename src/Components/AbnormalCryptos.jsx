@@ -39,7 +39,7 @@ function AbnormalCryptos(props) {
       },
     ]
 
-    const getDataForAbnormalCrypto = (abnormalCrypto) => {
+    const getRepresintationalAbnormalCrypto = (abnormalCrypto) => {
       switch (abnormalCrypto.noticeType) {
         case 'BLOCK_TRADE': 
           switch (abnormalCrypto.eventType) {
@@ -107,7 +107,7 @@ function AbnormalCryptos(props) {
       axios.get('https://www.binance.com/bapi/composite/v1/public/marketing/indicator/abnormal-trading-notice/pageList?pageSize=10')
         .then(response => {
           setAbnormanlCryptos(response?.data.data.map(x => {
-            let [value, text, colorStatus] = getDataForAbnormalCrypto(x)
+            let [value, text, colorStatus] = getRepresintationalAbnormalCrypto(x)
             return {
               symbol: x.baseAsset + '/' + x.quotaAsset,
               status: text,
